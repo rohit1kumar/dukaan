@@ -6,12 +6,12 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "format": "prettier --write \"*.js\"",
+    "format": "prettier --write \"**/*.js\"",
     "prepare": "husky install && npx husky add .husky/pre-commit \"npm run pre-commit\"",
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
+    "**/*.js": [
       "prettier --write",
       "eslint --fix"
     ]
@@ -34,5 +34,11 @@
     "lint-staged": "^13.2.2",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "sequelize": "^6.33.0",
+    "sqlite3": "^5.1.6"
   }
 }
