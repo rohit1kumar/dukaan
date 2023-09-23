@@ -1,23 +1,23 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../utils/db')
 
-const User = sequelize.define(
-	'User',
+const EndUser = sequelize.define(
+	'EndUser',
 	{
 		id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.UUID,
 			primaryKey: true,
-			autoIncrement: true
+			defaultValue: DataTypes.UUIDV4
+		},
+		name: {
+			type: DataTypes.STRING,
+			allowNull: false
 		},
 		email: {
 			type: DataTypes.STRING,
 			unique: true,
 			allowNull: false,
 			validate: { isEmail: true }
-		},
-		password: {
-			type: DataTypes.STRING,
-			allowNull: false
 		}
 	},
 	{
@@ -25,4 +25,4 @@ const User = sequelize.define(
 	}
 )
 
-module.exports = User
+module.exports = EndUser

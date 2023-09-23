@@ -5,9 +5,9 @@ const Conversation = sequelize.define(
 	'Conversation',
 	{
 		id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.UUID,
 			primaryKey: true,
-			autoIncrement: true
+			defaultValue: DataTypes.UUIDV4
 		},
 		status: {
 			type: DataTypes.STRING,

@@ -1,7 +1,7 @@
-const User = require('./User')
-const Chatbot = require('./Chatbot')
-const Conversation = require('./Conversation')
-const EndUser = require('./EndUser')
+const User = require('./user')
+const Chatbot = require('./chatbot')
+const Conversation = require('./conversation')
+const EndUser = require('./endUser')
 
 User.hasMany(Chatbot, { foreignKey: 'userId' })
 Chatbot.belongsTo(User, { foreignKey: 'userId' })
