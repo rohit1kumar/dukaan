@@ -7,13 +7,14 @@ const {
 	deleteUserById
 } = require('../controllers/user')
 const { createChatbot, getAllChatbots } = require('../controllers/chatbot')
+const { checkAuth } = require('../middlewares/auth')
 
 // User Routes
 router
 	.route('/:userId')
 	.get(getUserById)
-	.put(updateUserById)
-	.delete(deleteUserById)
+	.put(checkAuth, updateUserById)
+	.delete(checkAuth, deleteUserById)
 
 router.route('/').post(createUser).get(getAllUsers)
 

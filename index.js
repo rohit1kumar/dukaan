@@ -1,11 +1,12 @@
 const dotenv = require('dotenv')
-const express = require('express')
-
-const sequelize = require('./utils/db')
-require('./models') // To load all models and associations
-const apiRoutes = require('./routes')
-
 dotenv.config()
+
+const express = require('express')
+const apiRoutes = require('./routes')
+const sequelize = require('./utils/db')
+
+require('./utils/passport') // To setup passport
+require('./models') // To load all models and associations
 
 const app = express()
 

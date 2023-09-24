@@ -104,6 +104,7 @@ exports.getUserById = async (req, res) => {
 exports.updateUserById = async (req, res) => {
 	try {
 		const { userId } = req.params
+		const { id } = req.user
 		const { name, email, password } = req.body
 
 		const user = await User.findByPk(userId)
@@ -112,6 +113,13 @@ exports.updateUserById = async (req, res) => {
 				status: 'error',
 				message: 'Not Found',
 				error: 'User not found with the provided id'
+			})
+		}
+		if (id !== user.id) {
+			return res.status(401).json({
+				status: 'error',
+				message: 'Unauthorized',
+				error: 'You are not authorized to update this user'
 			})
 		}
 
@@ -153,6 +161,24 @@ exports.updateUserById = async (req, res) => {
 exports.deleteUserById = async (req, res) => {
 	try {
 		const { userId } = req.params
+		const { id } = req.user
+
+		const user = await User.findByPk(userId)
+		if (!user) {
+			return res.status(404).json({
+				status: 'error',
+				message: 'Not Found',
+				error: 'User not found with the provided id'
+			})
+		}
+		if (id !== user.id) {
+			return res.status(401).json({
+				status: 'error',
+				message: 'Unauthorized',
+				error: 'You are not authorized to delete this user'
+			})
+		}
+
 		await User.destroy({ where: { id: userId } })
 
 		res.status(200).json({
