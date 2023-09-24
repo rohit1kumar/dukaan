@@ -115,6 +115,7 @@ exports.getChatbotById = async (req, res) => {
  *  */
 exports.updateChatbotById = async (req, res) => {
 	try {
+		const { id } = req.user
 		const { chatbotId } = req.params
 		const { name, description } = req.body
 		const chatbot = await Chatbot.findByPk(chatbotId)
@@ -126,7 +127,13 @@ exports.updateChatbotById = async (req, res) => {
 			})
 		}
 
-		// TODO: check if user is authorized to update the chatbot
+		if (chatbot.userId !== id) {
+			return res.status(403).json({
+				status: 'error',
+				message: 'Forbidden',
+				error: 'You are not authorized to update this chatbot'
+			})
+		}
 
 		const updatedChatbot = await chatbot.update({ name, description })
 
@@ -149,6 +156,7 @@ exports.updateChatbotById = async (req, res) => {
  *  */
 exports.deleteChatbotById = async (req, res) => {
 	try {
+		const { id } = req.user
 		const { chatbotId } = req.params
 		const chatbot = await Chatbot.findByPk(chatbotId)
 		if (!chatbot) {
@@ -156,6 +164,14 @@ exports.deleteChatbotById = async (req, res) => {
 				status: 'error',
 				message: 'Not Found',
 				error: 'Chatbot not found with the provided id'
+			})
+		}
+
+		if (chatbot.userId !== id) {
+			return res.status(403).json({
+				status: 'error',
+				message: 'Forbidden',
+				error: 'You are not authorized to delete this chatbot'
 			})
 		}
 
