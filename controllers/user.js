@@ -103,6 +103,15 @@ exports.updateUserById = async (req, res) => {
 		const { userId } = req.params
 		const { name, email, password } = req.body
 
+		const user = await User.findByPk(userId)
+		if (!user) {
+			return res.status(404).json({
+				status: 'error',
+				message: 'Not Found',
+				error: 'User not found with the provided id'
+			})
+		}
+
 		/* If a user with the provided email exists and their ID doesn't match the user
 		being updated, it means the email is already taken by another user. */
 		if (email) {
@@ -116,14 +125,6 @@ exports.updateUserById = async (req, res) => {
 			}
 		}
 
-		const user = await User.findByPk(userId)
-		if (!user) {
-			return res.status(404).json({
-				status: 'error',
-				message: 'Not Found',
-				error: 'User not found with the provided id'
-			})
-		}
 		/* Using user instance to update instead of using User.update()
 		 hence no need to pass userId in the where clause */
 		const updatedUser = await user.update({ name, email, password })
