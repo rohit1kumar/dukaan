@@ -1,6 +1,6 @@
 const { User } = require('../models')
 const { hashPassword } = require('../utils/passwordUtils')
-
+const { findAllWithPagination } = require('../utils/pagination')
 /*
  * Create a new user
  * POST /users
@@ -43,14 +43,13 @@ exports.createUser = async (req, res) => {
  */
 exports.getAllUsers = async (req, res) => {
 	try {
-		const users = await User.findAll({
-			attributes: { exclude: ['password'] }
-		})
+		const { limit, page } = req.query
+		const users = await findAllWithPagination(User, limit, page)
 
 		res.status(200).json({
 			status: 'ok',
 			message: 'Users Retrieved Successfully',
-			data: users
+			...users
 		})
 	} catch (err) {
 		res.status(500).json({

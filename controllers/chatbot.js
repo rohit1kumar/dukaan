@@ -1,4 +1,5 @@
 const { Chatbot, User } = require('../models')
+const { findAllWithPagination } = require('../utils/pagination')
 
 /* Create a new chatbot for a user
  * POST /users/:userId/chatbots
@@ -42,6 +43,7 @@ exports.createChatbot = async (req, res) => {
  * */
 exports.getAllChatbots = async (req, res) => {
 	try {
+		let { limit, page } = req.query
 		const { userId } = req.params
 		// check if user exists
 		const user = await User.findByPk(userId)
@@ -53,11 +55,12 @@ exports.getAllChatbots = async (req, res) => {
 			})
 		}
 
-		const chatbots = await Chatbot.findAll({
-			where: {
-				userId
-			}
-		})
+		const chatbots = await findAllWithPagination(
+			Chatbot,
+			{ userId },
+			limit,
+			page
+		)
 
 		res.status(200).json({
 			status: 'ok',

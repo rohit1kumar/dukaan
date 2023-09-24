@@ -1,4 +1,5 @@
 const { Chatbot, Conversation } = require('../models')
+const { findAllWithPagination } = require('../utils/pagination')
 
 /* Create a new conversation with a chatbot
  * POST /chatbots/:chatbotId/conversation
@@ -44,6 +45,7 @@ exports.createConversation = async (req, res) => {
  * */
 exports.getConversations = async (req, res) => {
 	try {
+		const { limit, page } = req.query
 		const { chatbotId } = req.params
 
 		// check if chatbot exists
@@ -56,16 +58,17 @@ exports.getConversations = async (req, res) => {
 			})
 		}
 
-		const conversations = await Conversation.findAll({
-			where: {
-				chatbotId
-			}
-		})
+		const conversations = await findAllWithPagination(
+			Conversation,
+			{ chatbotId },
+			limit,
+			page
+		)
 
 		res.status(200).json({
 			status: 'ok',
 			message: 'Conversations Fetched Successfully',
-			data: conversations
+			...conversations
 		})
 	} catch (err) {
 		res.status(500).json({

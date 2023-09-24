@@ -1,4 +1,5 @@
 const { EndUser } = require('../models')
+const { findAllWithPagination } = require('../utils/pagination')
 
 /* Create a new endUser
  * POST /endusers
@@ -39,12 +40,13 @@ exports.createEndUser = async (req, res) => {
  * */
 exports.getAllEndUsers = async (req, res) => {
 	try {
-		const endUsers = await EndUser.findAll()
+		const { limit, page } = req.query
+		const endUsers = await findAllWithPagination(EndUser, limit, page)
 
 		res.status(200).json({
 			status: 'ok',
 			message: 'End Users Fetched Successfully',
-			data: endUsers
+			...endUsers
 		})
 	} catch (err) {
 		res.status(500).json({
