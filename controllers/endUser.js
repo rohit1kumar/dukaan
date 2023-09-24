@@ -37,11 +37,16 @@ exports.createEndUser = async (req, res) => {
 
 /* Get all endUsers
  * GET /endusers
+ * Optional query params: limit, page, name, email
  * */
 exports.getAllEndUsers = async (req, res) => {
 	try {
-		const { limit, page } = req.query
-		const endUsers = await findAllWithPagination(EndUser, limit, page)
+		const { limit, page, name, email } = req.query
+
+		const endUsers = await findAllWithPagination(EndUser, null, limit, page, {
+			name,
+			email
+		})
 
 		res.status(200).json({
 			status: 'ok',

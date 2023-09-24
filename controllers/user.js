@@ -40,11 +40,15 @@ exports.createUser = async (req, res) => {
 /*
  * Get all users
  * GET /users
+ *  Optional query params: limit, page, name, email
  */
 exports.getAllUsers = async (req, res) => {
 	try {
-		const { limit, page } = req.query
-		const users = await findAllWithPagination(User, limit, page)
+		const { limit, page, name, email } = req.query
+		const users = await findAllWithPagination(User, null, limit, page, {
+			name,
+			email
+		})
 
 		res.status(200).json({
 			status: 'ok',

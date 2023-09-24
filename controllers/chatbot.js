@@ -40,10 +40,11 @@ exports.createChatbot = async (req, res) => {
 
 /* Get all chatbots of a user by userId
  * GET /users/:userId/chatbots
+ *  Optional query params: limit, page, name, email
  * */
 exports.getAllChatbots = async (req, res) => {
 	try {
-		let { limit, page } = req.query
+		let { limit, page, name, description } = req.query
 		const { userId } = req.params
 		// check if user exists
 		const user = await User.findByPk(userId)
@@ -59,7 +60,11 @@ exports.getAllChatbots = async (req, res) => {
 			Chatbot,
 			{ userId },
 			limit,
-			page
+			page,
+			{
+				name,
+				description
+			}
 		)
 
 		res.status(200).json({
