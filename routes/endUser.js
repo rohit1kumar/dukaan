@@ -6,13 +6,17 @@ const {
 	updateEndUserById,
 	deleteEndUserById
 } = require('../controllers/endUser')
+const {
+	validateCreateEndUser,
+	validateUpdateEndUser
+} = require('../middlewares/validator')
 
 // EndUser Routes
-router.route('/').post(createEndUser).get(getAllEndUsers)
+router.route('/').post(validateCreateEndUser, createEndUser).get(getAllEndUsers)
 router
 	.route('/:endUserId')
 	.get(getSingleEndUser)
-	.put(updateEndUserById)
+	.put(validateUpdateEndUser, updateEndUserById)
 	.delete(deleteEndUserById)
 
 module.exports = router

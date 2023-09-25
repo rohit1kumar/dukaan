@@ -8,17 +8,25 @@ const {
 } = require('../controllers/user')
 const { createChatbot, getAllChatbots } = require('../controllers/chatbot')
 const { checkAuth } = require('../middlewares/auth')
+const {
+	validateCreateUser,
+	validateUpdateUser,
+	validateCreateChatbot
+} = require('../middlewares/validator')
 
 // User Routes
 router
 	.route('/:userId')
 	.get(getUserById)
-	.put(checkAuth, updateUserById)
+	.put(validateUpdateUser, checkAuth, updateUserById)
 	.delete(checkAuth, deleteUserById)
 
-router.route('/').post(createUser).get(getAllUsers)
+router.route('/').post(validateCreateUser, createUser).get(getAllUsers)
 
 // User's Chatbots Routes
-router.route('/:userId/chatbots').post(createChatbot).get(getAllChatbots)
+router
+	.route('/:userId/chatbots')
+	.post(validateCreateChatbot, createChatbot)
+	.get(getAllChatbots)
 
 module.exports = router
