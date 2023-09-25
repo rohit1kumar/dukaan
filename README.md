@@ -16,7 +16,7 @@ $ npm install && npm start
 ```
 
 ## ER Diagram:
- ![](https://i.imgur.com/O0yDoos.png)
+ ![](https://res.cloudinary.com/daefcpqh9/image/upload/v1695635592/Chatbots.drawio_1_qhzadf.svg)
 
 
 ## API Endpoints:
